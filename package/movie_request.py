@@ -2,6 +2,7 @@ import os
 import requests
 from .response import Response
 from dotenv import load_dotenv
+import time
 
 load_dotenv()
 
@@ -27,6 +28,7 @@ class MovieRequest:
         
         return Response(status_code=response.status_code, content=response.json())
 
+
     @classmethod
     def get_score(cls, id:str = 'tt1375666'):
         '''
@@ -45,22 +47,44 @@ class MovieRequest:
         
         return Response(status_code=response.status_code, content=response.json())
 
+
     @classmethod
     def get_score_from_name(cls, movie_name = 'inception 2010'):
         '''
-        Returns the imDb score of a movie, provided its imDb ID.
+        Aggregates search_movie and get_score 
 
             Parameters:
                     movie_name (str): the imDb ID of the movie
             Returns:
-                    score (int): the imDb rating 
+                    score (dict): a dictionary containing the film features (title, id, score) 
         '''
 
-        search_response = cls.search_movie(name=movie_name)
-        movie_id = search_response._content['results'][0].get('id', 'id not found')
-        movie_title = search_response._content['results'][0].get('title', 'title not found')
+        movie_features = {}
 
-        rating_response = cls.get_score(id=movie_id)
-        score = rating_response._content['imDb']
-        print(f"Score for the  movie '{movie_title}': {score}")
-        return score
+        search_response = cls.search_movie(name=movie_name)
+
+        print(search_response._content)
+        try: # avoids errors when the API is unusable (busy, limit of calls reached)
+            # movie_id = search_response._content['results'][0].get('id', 'id not found')
+            # movie_title = search_response._content['results'][0].get('title', 'title not found')
+            print("Searching movie ...")
+            movie_features['id'] = search_response._content['results'][0].get('id', 'id not found')
+            movie_features['title'] = search_response._content['results'][0].get('title', 'title not found')
+            movie_features['image'] = search_response._content['results'][0].get('image', 'image not found')
+            movie_features['description'] = search_response._content['results'][0].get('description', 'description not found')
+
+            print("Searching score ...")
+            rating_response = cls.get_score(id=movie_features['id'])
+            time.sleep(10)
+            movie_features['imdb_score'] = rating_response._content['imDb']
+            movie_features['metacritic_score'] = rating_response._content['metacritic']
+            movie_features['rottenTomatoes_score'] = rating_response._content['rottenTomatoes']
+
+            # print(f"Score for the  movie '{movie_features['title']}': {movie_features['score']}")
+
+            return movie_features
+            
+        except (TypeError, KeyError) as e: 
+            print(e)
+            movie_features['error'] = search_response._content.get('errorMessage')
+            return movie_features
