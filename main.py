@@ -8,6 +8,7 @@ from PIL import Image
 import pandas as pd
 import numpy as np
 from utils import movie_list
+import plotly.express as px
 
 load_dotenv()
 
@@ -19,13 +20,8 @@ with st.sidebar:
     search = st.text_input(label='Search for a movie !', value='Titanic')
 
     st.write('Lacking inspiration ?\nHere\'s a list of movies with Dwayne Johnson 🪨:')
-    for movie in movie_list:
-        st.button(label=movie, on_click=MovieRequest.get_score_from_name(movie_name=movie))
-    # st.button(label='Fast and furious: Hobbs & Shaw', )
-    # st.button(label='Jumanji')
-    # st.button(label='Black Adam')
-    # st.button(label='Red Notice')
-    # st.button(label='The Scorpion King')
+    # for movie in movie_list:
+    #     st.button(label=movie, on_click=MovieRequest.get_score_from_name(movie_name=movie))
 
     if search:
         query = MovieRequest.get_score_from_name(movie_name=search)
@@ -54,15 +50,11 @@ with col2:
         pass
 
 try:
-    chart_data = pd.DataFrame(
-        data={
-            'imDb score' : [float(query.get("imdb_score"))*10],
-            'Metacritic score' : [float(query.get("metacritic_score"))],
-            'Rotten Tomato score' : [float(query.get("rottenTomatoes_score"))]
-        },
-        # columns=["imdb", "metacritic", "rotten tomatoes"]
-        )
-
-    st.bar_chart(chart_data)
+    st.plotly_chart(
+        px.bar(x = ['imDb','Metacritic','Rotten Tomatoes'],
+        y = [float(query.get("imdb_score"))*10, 
+            float(query.get("metacritic_score")), 
+            float(query.get("rottenTomatoes_score"))])
+    )
 except TypeError as e:
     print(e)
