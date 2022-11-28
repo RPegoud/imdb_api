@@ -47,6 +47,24 @@ class MovieRequest:
         
         return Response(status_code=response.status_code, content=response.json())
 
+    @classmethod
+    def video(cls, id:str = 'tt1375666'):
+        '''
+        Gets the imDb score for a movie
+
+            Parameters:
+                    id (str): the imDb ID of the movie
+            Returns:
+                    rating_response (Response): the Rating response containing the several ratings 
+                    of the movie
+        '''
+
+        score_url = f'Trailer/{cls._api_key}/{id}'
+        full_url = cls._base_url + score_url
+        response = requests.request("GET", full_url)
+        
+        return Response(status_code=response.status_code, content=response.json())
+
 
     @classmethod
     def get_score_from_name(cls, movie_name = 'inception 2010'):
@@ -62,16 +80,21 @@ class MovieRequest:
         movie_features = {}
 
         search_response = cls.search_movie(name=movie_name)
+        
 
         print(search_response._content)
         try: # avoids errors when the API is unusable (busy, limit of calls reached)
             # movie_id = search_response._content['results'][0].get('id', 'id not found')
             # movie_title = search_response._content['results'][0].get('title', 'title not found')
             print("Searching movie ...")
+        
             movie_features['id'] = search_response._content['results'][0].get('id', 'id not found')
             movie_features['title'] = search_response._content['results'][0].get('title', 'title not found')
             movie_features['image'] = search_response._content['results'][0].get('image', 'image not found')
             movie_features['description'] = search_response._content['results'][0].get('description', 'description not found')
+            
+            #video_response = cls.video(id = movie_features['id'])
+            #movie_features['video'] = video_response._content['results'][0].get('trailer', 'trailer not found')
 
             print("Searching score ...")
             rating_response = cls.get_score(id=movie_features['id'])
