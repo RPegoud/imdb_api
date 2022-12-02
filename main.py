@@ -4,22 +4,15 @@ import requests
 from dotenv import load_dotenv
 import streamlit as st
 from PIL import Image
-from utils import movie_list
 import plotly.express as px
 
 load_dotenv()
-
-# assert isinstance(review, Response)
-# assert not isinstance(review,requests.Response)
 
 with st.sidebar:
     st.title('imDb Charts 🔥')
     search = st.text_input(label='Search for a movie !', value='Titanic')
 
     st.write('Lacking inspiration ?\nHere\'s a list of movies with Dwayne Johnson 🪨:')
-    # for movie in movie_list:
-    #     st.button(label=movie, on_click=MovieRequest.get_score_from_name(movie_name=movie))
-
     if search:
         query = MovieRequest.get_score_from_name(movie_name=search)
         print(query)
