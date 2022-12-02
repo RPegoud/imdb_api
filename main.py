@@ -1,12 +1,9 @@
 from package import MovieRequest
 from package import Response
 import requests
-import os
 from dotenv import load_dotenv
 import streamlit as st
 from PIL import Image
-import pandas as pd
-import numpy as np
 from utils import movie_list
 import plotly.express as px
 
