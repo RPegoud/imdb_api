@@ -25,8 +25,9 @@ Simply run `$ pip install -r requirements.txt`
 
 (To facilitate the notation, our .env file was commented out of the gitignore)
 
-api-key = YOUR_API_KEY
-base-url = "https://imdb-api.com/en/API/"
+`api-key = YOUR_API_KEY`
+
+`base-url = "https://imdb-api.com/en/API/"`
 
 ## 3. Streamlit
 
