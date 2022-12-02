@@ -10,15 +10,12 @@ Not only the imdb rate but other rates proposed on the website to have a concret
 
 We invite you to use our tool, if you write for example on internet a new movie on google. You could have a spoiler inside. With us don't worry you're safe. 
 
-We assure you a great night with your girlfriend or just your firends or your family. 
+We assure you a great night with your girlfriend or just your friends or your family. 
 
 
 Technical part :
 
-In the requirement you'll wind every library you need and their version to launch correclty our project that we hope you'll enjoy. 
-
-Our gittignore file specifies intentionally untracked files that Git should ignore like (Byte-compiled / optimized / DLL files, C, Distribution / packaging...)
-)
+In the requirement you'll wind every library you need and their version to launch correclty our project, that we hope you'll enjoy. 
 
 How to launch it ? 
 
@@ -35,7 +32,7 @@ If you never use streamlit, don't worry that's easy.
 
     - In the first time take the PATH of the main.py you cloned. 
 
-    - After, right this line of code. 
+    - After, write this line of code. 
 
             streamlit run "PATH"
     
@@ -45,4 +42,4 @@ If you never use streamlit, don't worry that's easy.
 
 Some improvements : The trailer could be added to the service, avoiding the fact to go on youtube and spend so much time on it... 
 
-Thank you !! 
+Thank you sir !! 
